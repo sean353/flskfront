@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Recipe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Include the menu using iframe -->
+    <iframe src="menu.html" frameborder="0" width="100%" height="60px"></iframe>
+
+    <div class="container">
+        <h1>Update Recipe</h1>
+        <form id="updateRecipeForm">
+            <div class="mb-3">
+                <label for="recipe_id" class="form-label">Recipe ID</label>
+                <input type="number" class="form-control" id="recipe_id" name="recipe_id" required>
+            </div>
+            <div class="mb-3">
+                <label for="name_of_recipe" class="form-label">Name of Recipe</label>
+                <input type="text" class="form-control" id="name_of_recipe" name="name_of_recipe" required>
+            </div>
+            <div class="mb-3">
+                <label for="ingredients" class="form-label">Ingredients</label>
+                <input type="text" class="form-control" id="ingredients" name="ingredients" required>
+            </div>
+            <div class="mb-3">
+                <label for="prepare_time" class="form-label">Prepare Time</label>
+                <input type="text" class="form-control" id="prepare_time" name="prepare_time" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Recipe</button>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const updateRecipeForm = document.getElementById('updateRecipeForm');
+
+            updateRecipeForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(updateRecipeForm);
+                const recipeId = formData.get('recipe_id');
+                const recipeData = {
+                    name_of_recipe: formData.get('name_of_recipe'),
+                    ingredients: formData.get('ingredients'),
+                    prepare_time: formData.get('prepare_time')
+                };
+
+                axios.put(`http://localhost:5000/update_recipe/${recipeId}`, recipeData)
+                    .then(response => {
+                        console.log('Recipe updated successfully:', response.data.message);
+                        // You can redirect to another page or update the UI as needed
+                    })
+                    .catch(error => console.error('Error updating recipe:', error));
+            });
+        });
+    </script>
+</body>
+</html>
